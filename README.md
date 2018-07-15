@@ -1,9 +1,7 @@
-# learning-vue
+# vue-mastery
 
-> Nuxt.js project
-
-
-Learning Vue. Using Nuxt starter template.
+Compiled notes and exercises to reach mastery in Vue.
+Using Nuxt starter template.
 
 
 ## Build Setup
@@ -24,3 +22,42 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+
+
+
+# Notes
+
+| Directives |  | |
+| ------:| ------:|  ------:|
+| v-for  | v-for="(item, i) in items" |  iterating through a list |
+| v-model | v-model="app" | two way data binding |
+| v-bind   or :| :class="item.class"  | can bind class or style |
+| v-on or @ | @click="myFunc" v-on="click:a, keyup: b, keydown: c, keyenter: d" | events |
+| v-if  | v-if="bool === 'true'" | conditionally render ele, |
+| v-else-if | v-else-if | conditionally render elem, can be chained |
+| v-else  | v-else | otherwise render this elem |
+| v-show | | conditionally toggle element |
+|  v-once | v-once="foo" | renders something once |
+| v-html | not to be used on user-generated content, XSS attacks | for strings that have html elements that need to be rendered|
+| v-text | v-text="foo"| similar to mustach templates |
+| v-cloak | v-cloak | can be used to hide un-compiled mustache bindings until the Vue instance is ready|
+| v-pre | v-pre | used for displaying raw mustache tags |
+
+<br>
+
+| Modifiers |  | |
+| ------:| ------:|  ------:|
+| v-model.trim |  | strips whitespace from user inputs |
+| v-model.number |  | changes strings to number inputs|
+| v-model.lazy |  | won't auto update automatically |
+| @mousemove.stop | | e.stopPropogation() |
+| @mousemove.prevent | | e.preventDefault() |
+| @submit.prevent | | will not reload page on submission |
+| @click.once | | click can only be triggered once |
+| @click.native | | listen to native events in the DOM |
+
+
+> Useful way to debug
+```html
+<pre> {{ $data }} </pre>
+```
