@@ -61,3 +61,33 @@ For detailed explanation on how things work, checkout the [Nuxt.js docs](https:/
 ```html
 <pre> {{ $data }} </pre>
 ```
+
+
+
+## Computed Properties
+For any complex logic, you should use a _computed property_.
+
+```html
+<div id="example">
+  <p>Original message: "{{ message }}"</p>
+  <p>Computed reversed message: "{{ reversedMessage }}"</p>
+</div>
+```
+
+```javascript
+var vm = new Vue({
+  el: '#example',
+  data: {
+    message: 'Hello'
+  },
+  computed: {
+    // a computed getter
+    reversedMessage: function () {
+      // `this` points to the vm instance
+      return this.message.split('').reverse().join('')
+    }
+  }
+})
+```
+
+If you instead wrote the revsedMessage function as a *method* instead of as *computed*, and invoked `{{ reversedMessage() }}`, it would achieve the exact same result. However, there is a difference between Computed Properties and Methods. _Computed Properties will be cached and will only change when its dependencies change_. A computed property will only re-evaluate when some of its dependencies have changed. This means as long as `message` has not changed, multiple access to the `reversedMessage` computed property will immediately return the previously computed result without having to run the function again. In comparison, a method invocation will _always_ run the function whenever a re-render happens or an update occurs. In cases where you do not need caching, then use a method instead.
