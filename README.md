@@ -117,4 +117,90 @@ When we use reactive premises for building applications, this means it's very ea
 
 Vue takes the data object, walks throught its properties and converts them to getters/setters. Vue cannot detect property addition or deletion so we create this object to keep track.
 
+## [Templates](https://vuejs.org/v2/guide/syntax.html#ad)
+
+Vue.js uses HTML-based template syntax to bind the Vue instance to the DOM, very useful for components.
+
+Templates are optional, you can also write render functions with optional JSX support.
+
+##[Components Basics](https://vuejs.org/v2/guide/components.html#ad)
+
+Components are reusable Vue instances with a name. In other words, it is a collection of elements that are encapsulated into a group that can be accessed through one single element.
+
+Since components are reusable Vue instances, they accept the same options as `new Vue`, such as `data`, `computed`, `watch`, `methods`, and `lifecycle hooks`. The only exceptions are a few root-specific options like `el`.
+
+Can use props, templates.
+A component’s `data` option must be a function, so that each instance can maintain an independent copy of the returned data object. If Vue didn’t have this rule, clicking on one button would affect the data of all other instances.
+
+##[Props](https://vuejs.org/v2/guide/components-props.html#ad)
+
+Types and Validation
+
+```Javascript
+// lazy
+props: ['title', 'likes', 'isPublished', 'commentIds', 'author']
+
+// better
+props: {
+  title: String,
+  likes: Number,
+  isPublished: Boolean,
+  commentIds: Array,
+  author: Object
+}
+
+// amazing
+props: {
+  title: {
+    type: String,
+    required: true,
+    default: "Ready Player One"
+  },
+  likes: {
+    type: Number,
+    required: true,
+    default: 0
+  },
+  isPublished: {
+    type: Boolean,
+    required: true,
+    default: true
+  },
+  commentIds: {
+    type: Array,
+    required: true,
+    default: () => []
+  },
+  author: {
+    type: Object,
+    required: true,
+    default: () => {
+      name: '',
+      id: ''
+    }
+  }
+}
+```
+
+This not only documents your component, but will also warn users in the browser’s JavaScript console if they pass the wrong type.
+
+Note: Objects and arrays need their defaults to be returned from a function.
+
+You don't necessarily need to pass the data in props to the child, either, you have the option of using vue instance data or a static value as you see fit.
+
+We use `v-bind` or `:` to dynamically bin props to data on the parent.
+
+Each component instance has its own isolated scope, which is why data must be a function. Without isolated scope, component state will update all instances of that component.
+
+
+[Camel cased props](https://vuejs.org/v2/guide/components-props.html#Prop-Casing-camelCase-vs-kebab-case) will be converted to kebob case
+```javascript
+props: ['helloWorld']
+```
+```html
+<div :hello-world="foo"></div>
+```
+
+All props form a [one-way-down binding](https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow) between the child property and the parent one: when the parent property updates, it will flow down to the child, but not the other way around. This prevents child components from accidentally mutating the parent’s state, which can make your app’s data flow harder to understand.
+
 
