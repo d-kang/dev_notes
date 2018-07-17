@@ -123,7 +123,7 @@ Vue.js uses HTML-based template syntax to bind the Vue instance to the DOM, very
 
 Templates are optional, you can also write render functions with optional JSX support.
 
-##[Components Basics](https://vuejs.org/v2/guide/components.html#ad)
+## [Components Basics](https://vuejs.org/v2/guide/components.html#ad)
 
 Components are reusable Vue instances with a name. In other words, it is a collection of elements that are encapsulated into a group that can be accessed through one single element.
 
@@ -132,7 +132,7 @@ Since components are reusable Vue instances, they accept the same options as `ne
 Can use props, templates.
 A component’s `data` option must be a function, so that each instance can maintain an independent copy of the returned data object. If Vue didn’t have this rule, clicking on one button would affect the data of all other instances.
 
-##[Props](https://vuejs.org/v2/guide/components-props.html#ad)
+## [Props](https://vuejs.org/v2/guide/components-props.html#ad)
 
 Types and Validation
 
@@ -204,3 +204,230 @@ props: ['helloWorld']
 All props form a [one-way-down binding](https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow) between the child property and the parent one: when the parent property updates, it will flow down to the child, but not the other way around. This prevents child components from accidentally mutating the parent’s state, which can make your app’s data flow harder to understand.
 
 
+If you mute a prop directly, it won't tell the parent that something changed. So when the parent re-renders, it will be overwritten to what it originally was.
+
+## [Slots](https://vuejs.org/v2/guide/components-slots.html#ad)
+Vue implements a content distribution API that’s modeled after the current Web Components spec draft, using the <slot> element to serve as distribution outlets for content.
+
+
+##[Filters](https://vuejs.org/v2/guide/filters.html#ad)
+The first thing to understand about filters is that they aren't replacements for methods, computed values, or watchers, because fiters don't tranform the data, just the output that the user sees.
+
+Filters sounds like it would be good to filter a lot of data, but filters are rerun on every single update, so better to use computed, for values like these that should be cached.
+
+##[Mixins](https://vuejs.org/v2/guide/mixins.html#ad)
+Mixins are a flexible way to distribute reusable functionalities for Vue components. A mixin object can contain any component options. When a component uses a mixin, all options in the mixin will be “mixed” into the component’s own options.
+
+
+It's a common situation: you have two components that are pretty similar, they share the same basic functionality, but there's enough that's different about each of them that you come to a crossroads: do I split this component into two different components? or do I keep one component, but create enough variance with props that I can alter each one?
+
+A mixin allows you to encapsulate one piece of functionality so that you can use it in different components throughout the application.
+
+If written correctly, they are pure, they don't modify or change things outside of the function's scope, so you will reliably always receive the same value with the same inputs on multiple executions.
+
+### [Merging with mixins](https://vuejs.org/v2/guide/mixins.html#Option-Merging)
+When a mixin and the component itself contain overlapping options, they will be “merged” using appropriate strategies.
+
+For example, data objects undergo a shallow merge (one property deep), with the component’s data taking priority in cases of conflicts.
+
+By default, mixins will be applied first, and the component will be applied second so that we can override it as necessary.
+
+The component has the last say.
+
+Mixins have all the lifecycle methods available to them, just like the components do.
+
+### [Global Mixins](https://vuejs.org/v2/guide/mixins.html#Global-Mixin)
+You can also apply a mixin globally. Use with caution! Once you apply a mixin globally, it will affect every Vue instance created afterwards. When used properly, this can be used to inject processing logic for custom options.
+
+Global mixins are literally applied to every single component. One use I can think of that makes sense is something like a plugin, where you may need to gain access to everything.
+
+But still, the use case for them is extremely limited and they should be used with great caution.
+
+Almost never ever use these.
+
+##[Custom Directives](https://vuejs.org/v2/guide/custom-directive.html#ad)
+In addition to the default set of directives shipped in core (v-model and v-show), Vue also allows you to register your own custom directives. Note that in Vue 2.0, the primary form of code reuse and abstraction is components, however there may be cases where you need some low-level DOM access on plain elements, and this is where custom directives would still be useful. An example would be focusing on an input element.
+
+
+`v-example` - this will instantiate a directive, but doesn't accept any arguments. Without passing a value, this would not be very flexible, but you could still hang some piece of functioanlity off of the DOM element.
+
+`v-example="value" - this will pass a value into the directive, and the directive figures out what to do based off of that value.
+```html
+<div v-if="stateExample">I will show up if stateExample is true</div>
+```
+
+`v-example="'string'"` - this will let you use a string as an expression
+```html
+<p v-html="'<strong>this is an example of a string in some text</strong>'"></p>
+```
+
+`v-example:arg="value"` - this allows us to pass in an argument to the directive. In the example below, we're binding to a class, and we'd style it with an object, stored separately.
+
+```html
+<div v-bind:class="someClassObject"></div>
+```
+
+`v-example:arg.modifier="value"` - this allows us to use a modifier. The example below allows us to call preventDefault() on the click event.
+
+```html
+<button v-on:submit.prevent></button>
+```
+
+### [Hook Functions](https://vuejs.org/v2/guide/custom-directive.html#Hook-Functions)
+A directive definition object can provide several hook functions (all optional):
+
+* `unbind`: _Unmoumted from the DOM_. Called only once, when the directive is unbound from the element.
+
+* `bind`: _Insertion into the DOM_. Called only once, when the directive is first bound to the element. This is where you can do one-time setup work.
+
+* `inserted`: _Element is inserted_. Called when the bound element has been inserted into its parent node (this only guarantees parent node presence, not necessarily in-document).
+
+* `update`: _Element is updated_. Called after the containing component’s VNode has updated, but possibly before its children have updated. The directive’s value may or may not have changed, but you can skip unnecessary updates by comparing the binding’s current and old values (see below on hook arguments).
+
+* `componentUpdated`: _Children are updated_. Called after the containing component’s VNode and the VNodes of its children have updated.
+
+## [Vuex](https://vuex.vuejs.org/)
+
+* Centralized store for shared data and logic, even shared methods or async.
+
+* Unidirectional data flow
+
+* Ensures that the state can only be mutated in a predictable fashion
+
+* Influenced by Flux, Redux and The Elm Architecture
+
+* Similar to Redux
+
+* You can still use Redux if you like but this is Vue's version
+
+* Integrates with Vue's official devtools extension to provide advanced features such as zero-config time-travel debugging and state snapshot export / import.
+
+> Why use Vuex?
+In a complex SPA, passing state between many components, and especially deeply nested or sibling components, can get complicated quickly. Having one centralized place to access your data can help you stay organized.
+
+Multiple views may depend on the same piece of state.
+
+Actions from different views may need to mutate the same piece of state.
+
+> When to use Vuex?
+Multiple instances of children/siblings communicating and sharing logic accross the application.
+
+Note: Not a replacement for single component methods. Not everything belongs in the Vuex Store.
+
+#### ./store/index.js
+```javascript
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
+export const store = new Vuex.Store({
+  state: {
+    key: 'value'
+  }
+})
+```
+
+#### main.js
+```javascript
+import Vue from 'vue'
+import App from './App.vue'
+
+import { store } from './store'
+
+new Vue({
+  el: '#app',
+  store,
+  template: '<App />',
+  components: { App }
+})
+
+```
+
+### One-Way Data Flow
+<img src="https://vuex.vuejs.org/flow.png" style="width:100%;max-width:450px;display:block;margin-left:auto;margin-right:auto;">
+
+### The Vuex Architecture
+<img src="https://vuex.vuejs.org/vuex.png" style="display:block;margin-left:auto;margin-right:auto;">
+
+
+* [Getters](https://vuex.vuejs.org/api/#getters) will make values able to show statically in our templates. In other words, getters can read the value, but not mutate the state.
+
+* [Mutations](https://vuex.vuejs.org/api/#mutations) will allow us to update the state, but they will always be synchronous. Mutations are the only way to change data in the state in the store.
+
+* [Actions](https://vuex.vuejs.org/api/#actions) will allow us to update the state asynchronously, but will use an existing mutation. This can be very helpful if you need to perform a few different mutations at once in a particular order, or reach out to a server.
+
+We separate actions and mutations because we don't want to get an ordering problem.
+
+```javascript
+actions: {
+  asyncIncrement ({ commit }) {
+    setTimeout(() => {
+      commit('increment')
+    }, 1000)
+  }
+}
+
+methods: {
+  asyncIncrement() {
+    this.$store.dispatch('asyncIncrement')
+  }
+}
+```
+
+On the component itself, we would use `computed` for `getters` (this makes sense because the value is already computed for us), and `methods` with `commit` to access the `mutations` with `dispatch for the `actions.
+
+In the Vue instance or a component:
+
+```javascript
+computed: {
+  value() {
+    return this.$store.getters.tripleCounter;
+  }
+},
+methods: {
+  increment() {
+    this.$store.commit('increment', 2)
+  },
+  asyncIncrement() {
+    this.$store.dispatch('asyncIncrement', 2)
+  }
+}
+```
+
+### [mapActions](https://vuex.vuejs.org/api/#mapactions)
+You can use a spread operator, useful when you have to work with a lot of getters/mutations/actions.
+
+```javascript
+import { mapActions } from 'vuex'
+
+export default {
+  // ...
+  methods: {
+    ...mapActions([
+      // map this.increment() to this.$store.commit('increment')
+      'increment',
+      'decrement',
+      'asyncIncrement'
+    ])
+  }
+}
+```
+
+This allows us to still make our own computed properties if we wish.
+
+
+
+## Resources
+[vue docs](https://vuejs.org/v2/api/)
+[vue repo](https://github.com/vuejs)
+[nuxt docs](https://nuxtjs.org/)
+[vuex docs](https://vuex.vuejs.org/)
+[vuex repo](https://github.com/vuejs/vuex)
+[css-tricks guide](https://css-tricks.com/guides/vue/)
+[awesome vue](https://github.com/vuejs/awesome-vue)
+[vue newsletter](https://news.vuejs.org/)
+[monterail blog](https://www.monterail.com/blog)
+[vue tips](http://vuetips.com/)
+[the majesty of vue](https://leanpub.com/vuejs2)
+[Sarah Dras intro-to-vue](https://github.com/sdras/intro-to-vue)
