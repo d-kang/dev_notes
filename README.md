@@ -7,18 +7,18 @@ Using Nuxt starter template.
 ## Build Setup
 
 ``` bash
-# install dependencies
-$ npm install # Or yarn install
+  # install dependencies
+  $ npm install # Or yarn install
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+  # serve with hot reload at localhost:3000
+  $ npm run dev
 
-# build for production and launch server
-$ npm run build
-$ npm start
+  # build for production and launch server
+  $ npm run build
+  $ npm start
 
-# generate static project
-$ npm run generate
+  # generate static project
+  $ npm run generate
 ```
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
@@ -34,8 +34,8 @@ For detailed explanation on how things work, checkout the [Nuxt.js docs](https:/
 | v-model | v-model="app" | two way data binding |
 | v-bind   or :| :class="item.class"  | can bind class or style |
 | v-on or @ | @click="myFunc" v-on="click:a, keyup: b, keydown: c, keyenter: d" | events |
-| v-if  | v-if="bool === 'true'" | conditionally render ele, |
-| v-else-if | v-else-if | conditionally render elem, can be chained |
+| v-if  | v-if="condition" | conditionally render ele, |
+| v-else-if | v-else-if="condition" | conditionally render elem, can be chained |
 | v-else  | v-else | otherwise render this elem |
 | v-show | | conditionally toggle element |
 |  v-once | v-once="foo" | renders something once |
@@ -60,35 +60,70 @@ For detailed explanation on how things work, checkout the [Nuxt.js docs](https:/
 
 > Useful way to debug
 ```html
-<pre> {{ $data }} </pre>
+  <pre> {{ $data }} </pre>
 ```
 
+> v-  if, else-if and else
+```html
+  <div v-if="loading">
+    Loading...
+  </div>
+
+  <div v-else-if="processing">
+    Processing
+  </div>
+
+  <div v-else>
+    Content here
+  </div>
+```
+
+> V-Bind and Dynamic CSS Classes
+
+```html
+  <!-- template -->
+  <div :class="['a', 'b', 'c']">
+  <!-- html -->
+  <div:class="one two three">
+
+  <!-- template -->
+  <div :class="{ a: true, b: false, c: true }">
+  <!-- html -->
+  <div :class="a c">
+
+  <!-- which allows you conditionally add a class like so -->
+  <div :class"{ loading: isLoading === true }">
+  <div :class"{ selected: objRef1 === objRef2 }">
+
+  <!-- you can have static classes and dynamic classes -->
+  <div class="todo" :class="{ selected: todo === currentTodo }" >
+```
 
 
 ## [Computed Properties](https://vuejs.org/v2/guide/computed.html#Computed-Properties)
 For any complex logic, you should use a _computed property_.
 
 ```html
-<div id="example">
-  <p>Original message: "{{ message }}"</p>
-  <p>Computed reversed message: "{{ reversedMessage }}"</p>
-</div>
+  <div id="example">
+    <p>Original message: "{{ message }}"</p>
+    <p>Computed reversed message: "{{ reversedMessage }}"</p>
+  </div>
 ```
 
 ```javascript
-var vm = new Vue({
-  el: '#example',
-  data: {
-    message: 'Hello'
-  },
-  computed: {
-    // a computed getter
-    reversedMessage: function () {
-      // `this` points to the vm instance
-      return this.message.split('').reverse().join('')
+  var vm = new Vue({
+    el: '#example',
+    data: {
+      message: 'Hello'
+    },
+    computed: {
+      // a computed getter
+      reversedMessage: function () {
+        // `this` points to the vm instance
+        return this.message.split('').reverse().join('')
+      }
     }
-  }
-})
+  })
 ```
 
 If you instead wrote the revsedMessage function as a *method* instead of as *computed*, and invoked `{{ reversedMessage() }}`, it would achieve the exact same result. However, there is a difference between Computed Properties and Methods. _Computed Properties will be cached and will only change when its dependencies change_. A computed property will only re-evaluate when some of its dependencies have changed. This means as long as `message` has not changed, multiple access to the `reversedMessage` computed property will immediately return the previously computed result without having to run the function again. In comparison, a method invocation will _always_ run the function whenever a re-render happens or an update occurs. In cases where you do not need caching, then use a method instead.
@@ -112,10 +147,76 @@ Watchers must have the same name as the data property.
 
 
 example: hover state
+
+[Deep Option](https://vuejs.org/v2/api/#Options-Data): If watching an object, you may need to pass the option `deep: true`, so that Vue will watch for changes within the object and run the handler. If you do not apply the `deep` option, and mutate a nested object, the watch handler will not run.
+
+Vue will also watch for changes within the object recursively.
+
+These operations are detected by default:
+```javascript
+  // Assignment
+  this.message = 'hello world!'
+
+  // Adding or removing an item in an array
+  this.array.push({})
+  this.array.splice(5)
+
+  // Sorting an array
+  this.array.sort()
+```
+
+All other operations will not envoke the watch handler:
+```javascript
+// Assignment to an attribute or a nested object
+this.obj.a = 'hello world!'
+this.obj.a.b = 'foo'
+
+// Changes made to items in an array
+this.array[0] = 'bar'
+this.array[0].stars = 5
+```
+
 ### Aside
 When we use reactive premises for building applications, this means it's very easy to update state in reaction to events.
 
 Vue takes the data object, walks throught its properties and converts them to getters/setters. Vue cannot detect property addition or deletion so we create this object to keep track.
+
+## [Lifecycle Hooks](https://vuejs.org/v2/api/#Options-Lifecycle-Hooks)
+### [beforeCreate](https://vuejs.org/v2/api/#beforeCreate)
+### [created](https://vuejs.org/v2/api/#created)
+### [beforeMount](https://vuejs.org/v2/api/#beforeMount)
+### [mounted](https://vuejs.org/v2/api/#mounted)
+### [beforeUpdate](https://vuejs.org/v2/api/#beforeUpdate)
+### [updated](https://vuejs.org/v2/api/#updated)
+### [activated](https://vuejs.org/v2/api/#activated)
+### [deactivated](https://vuejs.org/v2/api/#deactivated)
+### [beforeDestroy](https://vuejs.org/v2/api/#beforeDestroy)
+### [destroyed](https://vuejs.org/v2/api/#destroyed)
+### [errorCapture](https://vuejs.org/v2/api/#errorCaptured)
+
+
+```javascript
+  new Vue({
+    data() {
+      return {
+        color: ''
+      }
+    }
+    created() {
+      this.loadContent()
+    },
+    methods: {
+      loadContent() {
+        this.color = 'blue'
+      }
+    }
+  })
+```
+
+> Lifecycle Diagram
+
+<img src="https://vuejs.org/images/lifecycle.png" style="max-width:450px;display:block;margin-left:auto;margin-right:auto;">
+
 
 ## [Templates](https://vuejs.org/v2/guide/syntax.html#ad)
 
@@ -137,49 +238,49 @@ A component’s `data` option must be a function, so that each instance can main
 Types and Validation
 
 ```Javascript
-// lazy
-props: ['title', 'likes', 'isPublished', 'commentIds', 'author']
+  // lazy
+  props: ['title', 'likes', 'isPublished', 'commentIds', 'author']
 
-// better
-props: {
-  title: String,
-  likes: Number,
-  isPublished: Boolean,
-  commentIds: Array,
-  author: Object
-}
+  // better
+  props: {
+    title: String,
+    likes: Number,
+    isPublished: Boolean,
+    commentIds: Array,
+    author: Object
+  }
 
-// amazing
-props: {
-  title: {
-    type: String,
-    required: true,
-    default: "Ready Player One"
-  },
-  likes: {
-    type: Number,
-    required: true,
-    default: 0
-  },
-  isPublished: {
-    type: Boolean,
-    required: true,
-    default: true
-  },
-  commentIds: {
-    type: Array,
-    required: true,
-    default: () => []
-  },
-  author: {
-    type: Object,
-    required: true,
-    default: () => {
-      name: '',
-      id: ''
+  // amazing
+  props: {
+    title: {
+      type: String,
+      required: true,
+      default: "Ready Player One"
+    },
+    likes: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    isPublished: {
+      type: Boolean,
+      required: true,
+      default: true
+    },
+    commentIds: {
+      type: Array,
+      required: true,
+      default: () => []
+    },
+    author: {
+      type: Object,
+      required: true,
+      default: () => {
+        name: '',
+        id: ''
+      }
     }
   }
-}
 ```
 
 This not only documents your component, but will also warn users in the browser’s JavaScript console if they pass the wrong type.
@@ -195,10 +296,10 @@ Each component instance has its own isolated scope, which is why data must be a 
 
 [Camel cased props](https://vuejs.org/v2/guide/components-props.html#Prop-Casing-camelCase-vs-kebab-case) will be converted to kebob case
 ```javascript
-props: ['helloWorld']
+  props: ['helloWorld']
 ```
 ```html
-<div :hello-world="foo"></div>
+  <div :hello-world="foo"></div>
 ```
 
 All props form a [one-way-down binding](https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow) between the child property and the parent one: when the parent property updates, it will flow down to the child, but not the other way around. This prevents child components from accidentally mutating the parent’s state, which can make your app’s data flow harder to understand.
@@ -253,24 +354,24 @@ In addition to the default set of directives shipped in core (v-model and v-show
 
 `v-example="value" - this will pass a value into the directive, and the directive figures out what to do based off of that value.
 ```html
-<div v-if="stateExample">I will show up if stateExample is true</div>
+  <div v-if="stateExample">I will show up if stateExample is true</div>
 ```
 
 `v-example="'string'"` - this will let you use a string as an expression
 ```html
-<p v-html="'<strong>this is an example of a string in some text</strong>'"></p>
+  <p v-html="'<strong>this is an example of a string in some text</strong>'"></p>
 ```
 
 `v-example:arg="value"` - this allows us to pass in an argument to the directive. In the example below, we're binding to a class, and we'd style it with an object, stored separately.
 
 ```html
-<div v-bind:class="someClassObject"></div>
+  <div v-bind:class="someClassObject"></div>
 ```
 
 `v-example:arg.modifier="value"` - this allows us to use a modifier. The example below allows us to call preventDefault() on the click event.
 
 ```html
-<button v-on:submit.prevent></button>
+  <button v-on:submit.prevent></button>
 ```
 
 ### [Hook Functions](https://vuejs.org/v2/guide/custom-directive.html#Hook-Functions)
@@ -316,32 +417,31 @@ Note: Not a replacement for single component methods. Not everything belongs in 
 
 #### ./store/index.js
 ```javascript
-import Vue from 'vue'
-import Vuex from 'vuex'
+  import Vue from 'vue'
+  import Vuex from 'vuex'
 
-Vue.use(Vuex)
+  Vue.use(Vuex)
 
-export const store = new Vuex.Store({
-  state: {
-    key: 'value'
-  }
-})
+  export const store = new Vuex.Store({
+    state: {
+      key: 'value'
+    }
+  })
 ```
 
 #### main.js
 ```javascript
-import Vue from 'vue'
-import App from './App.vue'
+  import Vue from 'vue'
+  import App from './App.vue'
 
-import { store } from './store'
+  import { store } from './store'
 
-new Vue({
-  el: '#app',
-  store,
-  template: '<App />',
-  components: { App }
-})
-
+  new Vue({
+    el: '#app',
+    store,
+    template: '<App />',
+    components: { App }
+  })
 ```
 
 ### One-Way Data Flow
@@ -360,19 +460,19 @@ new Vue({
 We separate actions and mutations because we don't want to get an ordering problem.
 
 ```javascript
-actions: {
-  asyncIncrement ({ commit }) {
-    setTimeout(() => {
-      commit('increment')
-    }, 1000)
+  actions: {
+    asyncIncrement ({ commit }) {
+      setTimeout(() => {
+        commit('increment')
+      }, 1000)
+    }
   }
-}
 
-methods: {
-  asyncIncrement() {
-    this.$store.dispatch('asyncIncrement')
+  methods: {
+    asyncIncrement() {
+      this.$store.dispatch('asyncIncrement')
+    }
   }
-}
 ```
 
 On the component itself, we would use `computed` for `getters` (this makes sense because the value is already computed for us), and `methods` with `commit` to access the `mutations` with `dispatch for the `actions.
@@ -380,43 +480,41 @@ On the component itself, we would use `computed` for `getters` (this makes sense
 In the Vue instance or a component:
 
 ```javascript
-computed: {
-  value() {
-    return this.$store.getters.tripleCounter;
-  }
-},
-methods: {
-  increment() {
-    this.$store.commit('increment', 2)
+  computed: {
+    value() {
+      return this.$store.getters.tripleCounter;
+    }
   },
-  asyncIncrement() {
-    this.$store.dispatch('asyncIncrement', 2)
+  methods: {
+    increment() {
+      this.$store.commit('increment', 2)
+    },
+    asyncIncrement() {
+      this.$store.dispatch('asyncIncrement', 2)
+    }
   }
-}
 ```
 
 ### [mapActions](https://vuex.vuejs.org/api/#mapactions)
 You can use a spread operator, useful when you have to work with a lot of getters/mutations/actions.
 
 ```javascript
-import { mapActions } from 'vuex'
+  import { mapActions } from 'vuex'
 
-export default {
-  // ...
-  methods: {
-    ...mapActions([
-      // map this.increment() to this.$store.commit('increment')
-      'increment',
-      'decrement',
-      'asyncIncrement'
-    ])
+  export default {
+    // ...
+    methods: {
+      ...mapActions([
+        // map this.increment() to this.$store.commit('increment')
+        'increment',
+        'decrement',
+        'asyncIncrement'
+      ])
+    }
   }
-}
 ```
 
 This allows us to still make our own computed properties if we wish.
-
-
 
 ## Resources
 [vue docs](https://vuejs.org/v2/api/)
