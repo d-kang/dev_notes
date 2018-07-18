@@ -58,6 +58,9 @@ For detailed explanation on how things work, checkout the [Nuxt.js docs](https:/
 | @click.native | | listen to native events in the DOM |
 
 
+**v-model**: Two way data binding between Vue instance and virtual DOM for forms and inputs
+**v-bind**: One way data binding from Vue instance to virtual DOM to bind element attributes to a piece of state
+
 > Useful way to debug
 ```html
   <pre> {{ $data }} </pre>
@@ -101,7 +104,7 @@ For detailed explanation on how things work, checkout the [Nuxt.js docs](https:/
 
 
 ## [Computed Properties](https://vuejs.org/v2/guide/computed.html#Computed-Properties)
-For any complex logic, you should use a _computed property_.
+For any complex logic, you should use a _computed property_. Computed is an object with methods that returns the thing you want computed. Accessible in templates by name.
 
 ```html
   <div id="example">
@@ -144,6 +147,9 @@ It will only update the DOM for things that need to be changed, which is faster.
 Watchers are good for asyncronous updates, and updates/transitions with data changes.
 
 Watchers must have the same name as the data property.
+
+
+Watchers make the developer's life easier because you can watch a piece of state for changes and the watch handler will automatically run without having to tell Vue to do it explicitly each time.
 
 
 example: hover state
@@ -224,7 +230,13 @@ Vue.js uses HTML-based template syntax to bind the Vue instance to the DOM, very
 
 Templates are optional, you can also write render functions with optional JSX support.
 
+When using data or computed properties, you can access by the property name. If using with directives, should be surrounded in quotes, if it is an innerHTML then put inside mustaches.
+
 ## [Components Basics](https://vuejs.org/v2/guide/components.html#ad)
+
+Components are the building blocks to compose an app, and a central concept in Vue.
+
+Register a component with `Vue.component('Component', {})`
 
 Components are reusable Vue instances with a name. In other words, it is a collection of elements that are encapsulated into a group that can be accessed through one single element.
 
@@ -233,7 +245,21 @@ Since components are reusable Vue instances, they accept the same options as `ne
 Can use props, templates.
 A component’s `data` option must be a function, so that each instance can maintain an independent copy of the returned data object. If Vue didn’t have this rule, clicking on one button would affect the data of all other instances.
 
+Note: Vue has its own event system for custom components called "custom events", to use `@click`, you must use `@click.native`, otherwise the handler will not run.
+
 ## [Props](https://vuejs.org/v2/guide/components-props.html#ad)
+
+Props are a way for the child components to get data from its parent.
+
+From the parent template, bind the parent's data to the child components props by passing it like so:
+`<child-component :my-prop="myProp" />`
+
+Note the use of kebab case in v-bind. `:my-prop` is what the prop will be named inside the child component (you can name it whatever you want). The `"myProp"` in `:my-prop="myProp"` must match the name of the piece of state you wish to pass.
+
+Then in the child component, set the `props` option.
+`props: ['myProp']`
+
+Now `this.myProp` is attached to the component instance and can be used within the component. In the template, you would access it with `{{myProp}}`
 
 Types and Validation
 
