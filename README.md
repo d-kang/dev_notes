@@ -320,6 +320,35 @@ We use `v-bind` or `:` to dynamically bin props to data on the parent.
 Each component instance has its own isolated scope, which is why data must be a function. Without isolated scope, component state will update all instances of that component.
 
 
+
+[Custom Events](https://vuejs.org/v2/guide/components-custom-events.html#Event-Names)
+You can also pass state from child to parent by using "custom events". Very similar to the concept of lifting state up in React.
+
+
+```javascript
+// child component
+template: `<div @click="foo">Hello world!</div>`
+
+methods: {
+  foo() {
+    this.emit('bar', 'baz')
+  }
+}
+
+// parent
+template: `<div @bar="barHandler"> </div>`
+
+methods: {
+  barHandler(x) {
+    console.log('x:', x) // outputs 'x: baz'
+  }
+}
+```
+
+
+[vm.$on(event, callback)](https://vuejs.org/v2/api/#vm-on)
+Listen for a custom event on the current vm.
+
 [Camel cased props](https://vuejs.org/v2/guide/components-props.html#Prop-Casing-camelCase-vs-kebab-case) will be converted to kebob case
 ```javascript
   props: ['helloWorld']
@@ -327,6 +356,9 @@ Each component instance has its own isolated scope, which is why data must be a 
 ```html
   <div :hello-world="foo"></div>
 ```
+
+
+>Custom events are completely separate from the browser event system. The special methods--$on and $emit--are not aliases to the standard addEventListener and dispatchEvent. That explains why we need the .native modifier on components to listen to browser events such as 'click'.
 
 All props form a [one-way-down binding](https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow) between the child property and the parent one: when the parent property updates, it will flow down to the child, but not the other way around. This prevents child components from accidentally mutating the parent’s state, which can make your app’s data flow harder to understand.
 
@@ -539,6 +571,66 @@ You can use a spread operator, useful when you have to work with a lot of getter
     }
   }
 ```
+
+## [Transitions](https://vuejs.org/v2/guide/transitions.html#ad)
+
+Transition is a special component tht will not appear in the DOM, much like the template tag.
+
+Works with components and html elements.
+
+It is easiest to just name the transition as seen below. You can ommit the name but the css syntax is more verbose. Named transitions are also reusable.
+
+### named transition
+```html
+  <transition name="fade">
+    <p v-if="show">hello</p>
+  </transition>
+```
+
+```css
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
+```
+
+### unnamed transition
+```html
+  <transition>
+    <p v-if="show">hello</p>
+  </transition>
+```
+
+```css
+  p.v-enter-active, p.v-fade-leave-active {
+    transition: opacity .5s;
+  }
+  p.v-fade-enter, p.v-fade-leave-to {
+    opacity: 0;
+  }
+```
+
+[Transition Classes](https://vuejs.org/v2/guide/transitions.html#Transition-Classes)
+There are two phases, entering phase and leaving phase.
+
+There are six classes applied for enter/leave transitions.
+
+1. v-enter: Starting state for enter. Added before element is inserted, removed one frame after element is inserted.
+
+2. v-enter-active: Active state for enter. Applied during the entire entering phase. Added before element is inserted, removed when transition/animation finishes. This class can be used to define the duration, delay and easing curve for the entering transition.
+
+3. v-enter-to: Only available in versions 2.1.8+. Ending state for enter. Added one frame after element is inserted (at the same time v-enter is removed), removed when transition/animation finishes.
+
+4. v-leave: Starting state for leave. Added immediately when a leaving transition is triggered, removed after one frame.
+
+5. v-leave-active: Active state for leave. Applied during the entire leaving phase. Added immediately when leave transition is triggered, removed when the transition/animation finishes. This class can be used to define the duration, delay and easing curve for the leaving transition.
+
+6. v-leave-to: Only available in versions 2.1.8+. Ending state for leave. Added one frame after a leaving transition is triggered (at the same time v-leave is removed), removed when the transition/animation finishes.
+
+<img src="https://vuejs.org/images/transition.png" style="width:100%;max-width:450px;display:block;margin-left:auto;margin-right:auto;">
+
 
 This allows us to still make our own computed properties if we wish.
 
