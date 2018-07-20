@@ -1,5 +1,5 @@
 {
-  "name": "vue-mastery",
+  "name": "dev_notes",
   "version": "1.0.0",
   "description": "Nuxt.js project",
   "author": "David Kang",
@@ -13,7 +13,8 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "nuxt": "^1.0.0"
+    "nuxt": "^1.0.0",
+    "vue-form-wizard": "^0.8.4"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
