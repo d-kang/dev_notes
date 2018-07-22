@@ -1,5 +1,39 @@
 # Vue Notes
 
+- Table of Contents
+  - [Directives](#Directives)
+  - [Computed Properties](#Computed-Properties)
+  - [Watchers](#Watchers)
+  - [Lifecycle Hooks](#Lifecycle-Hooks)
+  - [Templates](#Templates)
+  - [Components Basics](#Components-Basics)
+  - [Props](#Props)
+    - [Camel cased props](#Camel-cased-props)
+  - [Custom Events](#Custom-Events)
+  - [Slots](#Slots)
+  - [Filters](#Filters)
+  - [Mixins](#Mixins)
+    - [Merging with mixins](#Merging-with-mixins)
+    - [Global Mixins](#Global-Mixins)
+  - [Custom Directives](#Custom-Directives)
+  - [Hook Functions](#Hook-Functions)
+  - [Vuex](#Vuex)
+    - [One-Way Data Flow](#One-Way-Data-Flow)
+    - [The Vuex Architecture](#The-Vuex-Architecture)
+    - [mapActions](#mapActions)
+  - [Transitions](#Transitions)
+    - [named transition](#named-transition)
+    - [unnamed transition](#unnamed-transition)
+    - [Transition Classes](#Transition-Classes)
+    - [Hide show animation](#Hide-show-animation)
+    - [List Transitions](#List-Transitions)
+  - [The Key Attribute](#The-Key-Attribute)
+  - [Resources](#Resources)
+
+- Jump To
+  - [Vue Packages](vue-packages.md)
+  - [README](../README.md)
+
 # Notes
 
 ## [Directives](https://vuejs.org/v2/guide/syntax.html#Directives)
@@ -292,7 +326,7 @@ We use `v-bind` or `:` to dynamically bin props to data on the parent.
 
 Each component instance has its own isolated scope, which is why data must be a function. Without isolated scope, component state will update all instances of that component.
 
-[Camel cased props](https://vuejs.org/v2/guide/components-props.html#Prop-Casing-camelCase-vs-kebab-case) will be converted to kebob case
+### [Camel cased props](https://vuejs.org/v2/guide/components-props.html#Prop-Casing-camelCase-vs-kebab-case) will be converted to kebob case
 ```javascript
   props: ['helloWorld']
 ```
@@ -300,18 +334,18 @@ Each component instance has its own isolated scope, which is why data must be a 
   <div :hello-world="foo"></div>
 ```
 
->Custom events are completely separate from the browser event system. The special methods--$on and $emit--are not aliases to the standard addEventListener and dispatchEvent. That explains why we need the .native modifier on components to listen to browser events such as 'click'.
-
 All props form a [one-way-down binding](https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow) between the child property and the parent one: when the parent property updates, it will flow down to the child, but not the other way around. This prevents child components from accidentally mutating the parent’s state, which can make your app’s data flow harder to understand.
 
 If you mutate a prop directly, it won't tell the parent that something changed. So when the parent re-renders, it will be overwritten to what it originally was.
 
 
-[Custom Events](https://vuejs.org/v2/guide/components-custom-events.html#Event-Names)
+## [Custom Events](https://vuejs.org/v2/guide/components-custom-events.html#Event-Names)
 
 Vue has its own event system for custom components called "custom events", to use `@click`, you must use `@click.native`, otherwise the handler will not run.
 
 You can also pass state from child to parent using "custom events". Very similar to the concept of lifting state up in React.
+
+>Custom events are completely separate from the browser event system. The special methods--$on and $emit--are not aliases to the standard addEventListener and dispatchEvent. That explains why we need the .native modifier on components to listen to browser events such as 'click'.
 
 ```javascript
 // child component
@@ -352,12 +386,12 @@ You can watch for an event from within the same component with:
 Vue implements a content distribution API that’s modeled after the current Web Components spec draft, using the <slot> element to serve as distribution outlets for content.
 
 
-##[Filters](https://vuejs.org/v2/guide/filters.html#ad)
+## [Filters](https://vuejs.org/v2/guide/filters.html#ad)
 The first thing to understand about filters is that they aren't replacements for methods, computed values, or watchers, because fiters don't tranform the data, just the output that the user sees.
 
 Filters sounds like it would be good to filter a lot of data, but filters are rerun on every single update, so better to use computed, for values like these that should be cached.
 
-##[Mixins](https://vuejs.org/v2/guide/mixins.html#ad)
+## [Mixins](https://vuejs.org/v2/guide/mixins.html#ad)
 Mixins are a flexible way to distribute reusable functionalities for Vue components. A mixin object can contain any component options. When a component uses a mixin, all options in the mixin will be “mixed” into the component’s own options.
 
 
@@ -387,7 +421,7 @@ But still, the use case for them is extremely limited and they should be used wi
 
 Almost never ever use these.
 
-##[Custom Directives](https://vuejs.org/v2/guide/custom-directive.html#ad)
+## [Custom Directives](https://vuejs.org/v2/guide/custom-directive.html#ad)
 In addition to the default set of directives shipped in core (v-model and v-show), Vue also allows you to register your own custom directives. Note that in Vue 2.0, the primary form of code reuse and abstraction is components, however there may be cases where you need some low-level DOM access on plain elements, and this is where custom directives would still be useful. An example would be focusing on an input element.
 
 
@@ -485,7 +519,7 @@ Note: Not a replacement for single component methods. Not everything belongs in 
   })
 ```
 
-### One-Way Data Flow
+## One-Way Data Flow
 <img src="https://vuex.vuejs.org/flow.png" style="width:100%;max-width:450px;display:block;margin-left:auto;margin-right:auto;">
 
 ### The Vuex Architecture
@@ -596,7 +630,7 @@ It is easiest to just name the transition as seen below. You can ommit the name 
   }
 ```
 
-[Transition Classes](https://vuejs.org/v2/guide/transitions.html#Transition-Classes)
+### [Transition Classes](https://vuejs.org/v2/guide/transitions.html#Transition-Classes)
 There are two phases, entering phase and leaving phase.
 
 There are six classes applied for enter/leave transitions.
@@ -616,7 +650,7 @@ There are six classes applied for enter/leave transitions.
 <img src="https://vuejs.org/images/transition.png" style="width:100%;max-width:450px;display:block;margin-left:auto;margin-right:auto;">
 
 
-### 5 hide show animation
+### Hide show animation
 ```css
   .hand-enter-active,
   .hand-leave-active {
@@ -655,7 +689,7 @@ There are six classes applied for enter/leave transitions.
 
 
 
-[List Transitions](https://vuejs.org/v2/guide/transitions.html#List-Transitions)
+### [List Transitions](https://vuejs.org/v2/guide/transitions.html#List-Transitions)
 For a list of items rendered simultaneously we can use the `<transition-group>` component.
 
 ```javascript

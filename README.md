@@ -7,3 +7,7 @@ Compiled notes for different languages/technologies etc.
 * [CSS](css.md)
 
 
+- Table of Contents
+  - Vue
+    - [Introduction to Vue](vue/vue.md)
+    - [Vue Packages](vue/vue-packages.md)
