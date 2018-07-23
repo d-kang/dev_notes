@@ -10,4 +10,4 @@ Compiled notes for different languages/technologies etc.
 - Table of Contents
   - Vue
     - [Introduction to Vue](vue/vue.md)
-    - [Vue Packages](vue/vue-packages.md)
+    - [Vue CLI](vue/vue-cli.md)

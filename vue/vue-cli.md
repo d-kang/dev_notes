@@ -1,4 +1,4 @@
-# Vue Packages
+# Vue CLI
 
 - Table of contents
   - [Inline SVG](#Inline-SVG)

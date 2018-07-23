@@ -31,7 +31,7 @@
   - [Resources](#Resources)
 
 - Jump To
-  - [Vue Packages](vue-packages.md)
+  - [Vue CLI](vue-cli.md)
   - [README](../README.md)
 
 # Notes
