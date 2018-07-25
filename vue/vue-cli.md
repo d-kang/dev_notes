@@ -2,6 +2,8 @@
 
 - Table of contents
   - [Inline SVG](#Inline-SVG)
+  - [Deploying to heroku](#Deploying-to-heroku)
+
 
 
 ## [Inline SVG](https://cli.vuejs.org/guide/webpack.html#adding-a-new-loader)
@@ -54,3 +56,16 @@ module.exports = {
   }
 }
 ```
+
+
+
+
+
+#### [Deploying to heroku](https://medium.com/netscape/deploying-a-vue-js-2-x-app-to-heroku-in-5-steps-tutorial-a69845ace489)
+1. `$ heroku create <YOUR-PROJECT-NAME-HERE>`
+2. `$ heroku config:set NODE_ENV=production --app <YOUR-PROJECT-NAME-HERE>`
+3. Create an express server
+  - add script to package.json: `"start": "node server",`
+  - test server: `$ npm run build && npm start`
+4. `$ heroku git:remote --app <YOUR-PROJECT-NAME-HERE>`
+5. `$ git push heroku master`

@@ -23,4 +23,11 @@ Make something popout when you hover
 
 
 ## Button Animation
+monaco-tree-wrapper
+  monaco-tree-rows
 
+    monaco-tree-row expanded has-children
+    monaco-icon-label folder-icon database-name-folder-icon explorer-item
+
+
+    monaco-tree-row
